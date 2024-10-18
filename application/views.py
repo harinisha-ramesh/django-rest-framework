@@ -2,7 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
+from rest_framework.pagination import PageNumberPagination
 
+class ProductPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class ProductView(APIView):
 
@@ -44,7 +49,21 @@ class ProductView(APIView):
             return Response("Data Saved")
         else:
             return Response(new_product.errors)
+
+class PaginatedProductView(APIView):
+    def get(self, request):
+        all_products = Product.objects.all()
+        paginator = ProductPagination()
+        page = paginator.paginate_queryset(all_products, request)
+
+        if page is not None:
+            serializer = Product_serializer(page, many = True)
+            return paginator.get_paginated_response(serializer.data)
         
+        serializer = Product_serializer(all_products, many = True)
+        return Response(serializer.data)
+
+
 
 class ProductViewById(APIView):
 
@@ -86,7 +105,6 @@ class ProductViewById(APIView):
         product.delete()
         return Response("Data Deleted")  
     
-
 class CategoryView(APIView):
 
     def get(self, request):
@@ -107,3 +125,5 @@ class CategoryViewById(APIView):
         category_delete = Category.objects.get(id = id)
         category_delete.delete()
         return Response("Data Deleted")            
+    
+    
