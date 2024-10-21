@@ -11,11 +11,8 @@ class ProductTestCase(TestCase):
     
 class ProductTestCase(TestCase):
     def setUp(self):
-        # Create an API client
         self.client = APIClient()
-        # Create 5 random products using the factory
         self.products = ProductFactory.create_batch(5)
-        # URL for the product list
         self.product_list_url = reverse('product-list') 
 
     def test_product_creation(self):
