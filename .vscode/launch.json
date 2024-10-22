@@ -16,7 +16,7 @@
             "django": true,
             "autoStartBrowser": false,
             "env": {
-                "DJANGO_SETTINGS_MODULE": "your_project_name.settings"  // Change to your project settings
+                "DJANGO_SETTINGS_MODULE": "practice_rest.settings"  // Change to your project settings
             },
             "justMyCode": true 
         }

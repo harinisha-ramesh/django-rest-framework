@@ -2,8 +2,8 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-from .models import product
-from .factories import ProductFactory
+from .models import *
+from .factories import *
 from decimal import Decimal
 
 class ProductTestCase(TestCase):
@@ -34,7 +34,7 @@ class ProductTestCase(TestCase):
     def test_retrieve_single_product(self):
         """Test retrieving a single product"""
         product_instance = self.products[0]
-        url = reverse('product-detail', kwargs={'pk': product_instance.pk})  # 'product-detail' URL assumes you have this in your URLconf
+        url = reverse('product-detail', kwargs={'pk': product_instance.pk})  
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], product_instance.name)
