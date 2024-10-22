@@ -7,7 +7,7 @@ class Command(BaseCommand):
     
     def add_arguments(self, parser):
         parser.add_argument('--name',type=str,default= 'stranger', help = 'Name of the person to greet')
-        parser.add_argument('--age',type=int,default=0,help='Age of the person') 
+        parser.add_argument('--age',type=int,default=3,help='Age of the person') 
 
     def handle(self, *args, **options):
         name = options['name']
