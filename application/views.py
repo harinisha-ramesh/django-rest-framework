@@ -10,7 +10,6 @@ class ProductPagination(PageNumberPagination):
     max_page_size = 100
 
 class ProductView(APIView):
-
     # def get(self, request):
     #     all_products = Product.objects.all()
     #     product_data = []
@@ -28,27 +27,22 @@ class ProductView(APIView):
     
     def get(self, request):
         all_products = Product.objects.all()
-        serialize_product = Product_serializer(all_products, many = True).data
-        
+        serialize_product = Product_serializer(all_products, many = True).data  
         return Response(serialize_product)  
     
-    # def post(self, request):
-        
+    # def post(self, request):        
     #     new_product = Product(product_name = request.data['product_name'], product_code = request.data['product_code'], price = request.data['price'], rating = request.data['rating'], category_id = request.data[category_id])
-
-    #     new_product.save()
-        
+    #     new_product.save()       
     #     return Response("Data Saved")
     
-    def post(self, request):
-        
+    def post(self, request):       
         new_product = Product_serializer(data=request.data)
-
         if new_product.is_valid():
             new_product.save()
             return Response("Data Saved")
         else:
             return Response(new_product.errors)
+
 
 class PaginatedProductView(APIView):
     def get(self, request):
@@ -62,7 +56,6 @@ class PaginatedProductView(APIView):
         
         serializer = Product_serializer(all_products, many = True)
         return Response(serializer.data)
-
 
 
 class ProductViewById(APIView):
@@ -105,6 +98,7 @@ class ProductViewById(APIView):
         product.delete()
         return Response("Data Deleted")  
     
+
 class CategoryView(APIView):
 
     def get(self, request):
@@ -119,6 +113,7 @@ class CategoryView(APIView):
             return Response("Data Saved")
         else:
             return Response(new_category.errors)
+
 
 class CategoryViewById(APIView):
     def delete(self, request, id):
