@@ -23,8 +23,7 @@ class ProductTestCase(TestCase):
             self.assertIsInstance(p.name, str)
             self.assertIsInstance(p.price, Decimal)
             self.assertTrue(0 <= p.rating <= 5)
-
-    
+ 
     def test_list_products(self):
         """Test listing all products"""
         response = self.client.get(self.product_list_url)
@@ -40,5 +39,4 @@ class ProductTestCase(TestCase):
         self.assertEqual(response.data['name'], product_instance.name)
         self.assertEqual(Decimal(response.data['price']), product_instance.price)
         self.assertEqual(float(response.data['rating']), product_instance.rating)    
-
-    
+   

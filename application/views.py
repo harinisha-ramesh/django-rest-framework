@@ -10,6 +10,19 @@ class ProductPagination(PageNumberPagination):
     max_page_size = 100
 
 class ProductView(APIView):
+    def get(self, request):
+        all_products = Product.objects.all()
+        serialize_product = Product_serializer(all_products, many = True).data  
+        return Response(serialize_product) 
+    
+    def post(self, request):       
+        new_product = Product_serializer(data=request.data)
+        if new_product.is_valid():
+            new_product.save()
+            return Response("Data Saved")
+        else:
+            return Response(new_product.errors)
+
     # def get(self, request):
     #     all_products = Product.objects.all()
     #     product_data = []
@@ -24,24 +37,13 @@ class ProductView(APIView):
     #         }
     #         product_data.append(single_product)
     #     return Response(product_data)    
-    
-    def get(self, request):
-        all_products = Product.objects.all()
-        serialize_product = Product_serializer(all_products, many = True).data  
-        return Response(serialize_product)  
+     
     
     # def post(self, request):        
     #     new_product = Product(product_name = request.data['product_name'], product_code = request.data['product_code'], price = request.data['price'], rating = request.data['rating'], category_id = request.data[category_id])
     #     new_product.save()       
     #     return Response("Data Saved")
     
-    def post(self, request):       
-        new_product = Product_serializer(data=request.data)
-        if new_product.is_valid():
-            new_product.save()
-            return Response("Data Saved")
-        else:
-            return Response(new_product.errors)
 
 
 class PaginatedProductView(APIView):
