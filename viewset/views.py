@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins, status
+from rest_framework.response import Response
 from .models import *
 from .serializers import * 
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -18,6 +19,29 @@ class ProductViewSet(viewsets.ModelViewSet):
 class MyReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = product.objects.all()
     serializer_class = Productserializer
+
+class ProductGenericViewSet(mixins.ListModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            mixins.CreateModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = product.objects.all()
+    serializer_class = Productserializer 
+    authentication_classes = [BasicAuthentication]  
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def destroy(self, request, *args, **kwargs):
+        product_instance = self.get_object()
+        
+        if not product_instance.is_deletable:
+            return Response(
+                {"detail":"This Product cannot be deleted."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        self.perform_destroy(product_instance)
+        return super().destroy(request,*args, **kwargs)
+
 
     # def list(self, request, *args, **kwargs):
         # pdb.set_trace()  # Set a breakpoint here to debug the list view
