@@ -19,7 +19,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class MyReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = product.objects.all()
     serializer_class = Productserializer
-
+    
 class ProductGenericViewSet(mixins.ListModelMixin,
                             mixins.RetrieveModelMixin,
                             mixins.UpdateModelMixin,
