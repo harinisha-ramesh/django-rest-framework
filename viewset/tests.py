@@ -13,7 +13,7 @@ class ProductTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.products = ProductFactory.create_batch(5)
-        self.product_list_url = reverse('product-list') 
+        self.product_list_url = reverse('product_list')
 
     def test_product_creation(self):
         """Test that products are created correctly"""
@@ -23,7 +23,7 @@ class ProductTestCase(TestCase):
             self.assertIsInstance(p.name, str)
             self.assertIsInstance(p.price, Decimal)
             self.assertTrue(0 <= p.rating <= 5)
- 
+
     def test_list_products(self):
         """Test listing all products"""
         response = self.client.get(self.product_list_url)
@@ -35,8 +35,8 @@ class ProductTestCase(TestCase):
         product_instance = self.products[0]
         url = reverse('product-detail', kwargs={'pk': product_instance.pk})  
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['name'], product_instance.name)
-        self.assertEqual(Decimal(response.data['price']), product_instance.price)
-        self.assertEqual(float(response.data['rating']), product_instance.rating)    
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        self.assertEqual(response.data['name'],product_instance.name)
+        self.assertEqual(Decimal(response.data['price']),product_instance.price)
+        self.assertEqual(float(response.data['rating']),product_instance.rating)
    
