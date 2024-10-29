@@ -8,6 +8,4 @@ class product(models.Model):
     is_deletable: bool = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
-
-    
+        return self.name      
