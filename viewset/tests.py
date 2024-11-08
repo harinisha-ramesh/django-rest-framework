@@ -17,8 +17,11 @@ class ProductTestCase(TestCase):
 
     def test_product_creation(self):
         """Test that products are created correctly"""
-        product_count = product.objects.count()
-        self.assertEqual(product_count, 5)
+        # product_count = product.objects.count()
+        # self.assertEqual(product_count, 5)
+        response = self.client.post(self.product_list_url,data=self.products)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.data["price"],self.products["price"])
         for p in self.products:
             self.assertIsInstance(p.name, str)
             self.assertIsInstance(p.price, Decimal)
@@ -38,5 +41,4 @@ class ProductTestCase(TestCase):
         self.assertEqual(response.status_code,status.HTTP_200_OK)
         self.assertEqual(response.data['name'],product_instance.name)
         self.assertEqual(Decimal(response.data['price']),product_instance.price)
-        self.assertEqual(float(response.data['rating']),product_instance.rating)
-   
+        self.assertEqual(float(response.data['rating']),product_instance.rating)  
